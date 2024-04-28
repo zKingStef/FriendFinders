@@ -91,16 +91,16 @@ namespace DarkBot
 
             Slash = Client.UseSlashCommands();
             Client.GetSlashCommands();
-            Slash.RegisterCommands<AutoRole_SL>();
+            //Slash.RegisterCommands<AutoRole_SL>();
             Slash.RegisterCommands<Calculator_SL>();
-            Slash.RegisterCommands<DarkServices_SL>();
-            Slash.RegisterCommands<ImgFinder_SL>();
+            //Slash.RegisterCommands<DarkServices_SL>();
+            //Slash.RegisterCommands<ImgFinder_SL>();
             Slash.RegisterCommands<MiniGame_SL>();
-            Slash.RegisterCommands<Misc_SL>();
-            Slash.RegisterCommands<Moderation_SL>();
-            Slash.RegisterCommands<PokeDiary_SL>();
+            //Slash.RegisterCommands<Misc_SL>();
+            //Slash.RegisterCommands<Moderation_SL>();
+            //Slash.RegisterCommands<PokeDiary_SL>();
             Slash.RegisterCommands<Ticket_SL>();
-            Slash.RegisterCommands<Troll_SL>();
+            //Slash.RegisterCommands<Troll_SL>();
             Slash.SlashCommandErrored += SlashCommandErrored;
 
             Client.ComponentInteractionCreated += UserInteraction_Handler.HandleInteraction;
@@ -148,7 +148,7 @@ namespace DarkBot
         public static async Task RunAsync()
         {
             // Set the initial activity and connect the bot to Discord
-            var act = new DiscordActivity("Developed by zKingStef", ActivityType.ListeningTo);
+            var act = new DiscordActivity("FriendFinders", ActivityType.Playing);
             await Client.ConnectAsync(act, UserStatus.Online).ConfigureAwait(false);
         }
 

@@ -150,9 +150,9 @@ namespace DarkBot.src.CommandHandler
 
         public static async Task CheckIfUserHasTicketPermissions(InteractionContext ctx)
         {
-            if (!CmdShortener.CheckRole(ctx, 978352059617280010))
+            if (!CmdShortener.CheckRole(ctx, 1209284430229803008))
             {
-                await CmdShortener.SendNotification(ctx, "No access", "You do not have the necessary permissions to execute this command.", DiscordColor.Red, 0);
+                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du bist nicht die nötigen Rechte, um Ticketbefehle zu verweden!", DiscordColor.Red, 0);
                 return;
             }
         }

@@ -15,15 +15,14 @@ using DarkBot.src.CommandHandler;
 
 namespace DarkBot.src.SlashCommands
 {
-    [SlashCommandGroup("ticket", "Slash Commands for the Ticketsystem.")]
+    [SlashCommandGroup("ticket", "Alle Ticket Befehle")]
     public class Ticket_SL : ApplicationCommandModule
     {
-        [SlashCommand("system", "Summon Ticket System")]
-        [RequireRoles(RoleCheckMode.Any, "🧰 CEO")]
+        [SlashCommand("system", "Erschaffe das Ticket System")]
         public  async Task Ticketsystem(InteractionContext ctx,
-                                [Choice("Button", 0)]
-                                [Choice("Dropdown Menu", 1)]
-                                [Option("system", "Buttons oder Dropdown")] long systemChoice = 1)
+                                [Choice("Valo", 0)]
+                                [Choice("CS2", 1)]
+                                [Option("form", "Welche Ticket Form?")] long systemChoice = 1)
         {
             // Pre Execution Checks
             await CmdShortener.CheckIfUserHasCeoRole(ctx);
@@ -31,109 +30,44 @@ namespace DarkBot.src.SlashCommands
             if (systemChoice == 0)
             {
                 var embedTicketButtons = new DiscordMessageBuilder()
-                .AddEmbed(new DiscordEmbedBuilder()
+                    .AddEmbed(new DiscordEmbedBuilder()
+                        .WithTitle("**Valorant Clan Beitrittsformular**")
+                        .WithColor(DiscordColor.IndianRed)
+                        .WithDescription("Fülle dieses Formular aus, um dich bei uns für den Valorant Clan zu bewerben.")
+                        .WithImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png")
+                    )
+                    .AddComponents(new DiscordComponent[]
+                    {
+                        new DiscordButtonComponent(ButtonStyle.Success, "ticketValoClanBtn", "Zum Formular")
+                    });
 
-                .WithColor(DiscordColor.White)
-                .WithTitle("**Ticket-System**")
-                .WithDescription("Klicke auf einen Button, um ein Ticket der jeweiligen Kategorie zu erstellen")
-                )
-                .AddComponents(new DiscordComponent[]
-                {
-                    new DiscordButtonComponent(ButtonStyle.Success, "ticketDarkServiceBtn", "Support"),
-                    //new DiscordButtonComponent(ButtonStyle.Success, "ticketSupportBtn", "Support"),
-                    //new DiscordButtonComponent(ButtonStyle.Danger, "ticketUnbanBtn", "Entbannung"),
-                    //new DiscordButtonComponent(ButtonStyle.Primary, "ticketDonationBtn", "Spenden"),
-                    //new DiscordButtonComponent(ButtonStyle.Secondary, "ticketOwnerBtn", "Inhaber"),
-                    //new DiscordButtonComponent(ButtonStyle.Success, "ticketApplyBtn", "Bewerben")
-                });
+                var response = new DiscordInteractionResponseBuilder()
+                    .AddEmbed(embedTicketButtons.Embeds[0])
+                    .AddComponents(embedTicketButtons.Components);
 
-                var response = new DiscordInteractionResponseBuilder().AddEmbed(embedTicketButtons.Embeds[0]).AddComponents(embedTicketButtons.Components);
                 await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, response);
             }
 
             else if (systemChoice == 1)
             {
-                var dropdownComponents = new List<DiscordSelectComponentOption>()
-                {
-                    new(
-                        "Dark Solutions", "dd_TicketDarkSolutions", "Order any Service here!",
-                        emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":DarkServices:"))),
-
-                    //new(
-                    //    "Support", "dd_TicketSupport", "Allgemeine Probleme, Fragen, Wünsche und sonstiges!",
-                    //    emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":envelope:"))),
-                    //
-                    //new(
-                    //    "Entbannung", "dd_TicketUnban", "Duskutiere über einen Bann!",
-                    //    emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":tickets:"))),
-                    //
-                    //new(
-                    //    "Spenden", "dd_TicketDonation", "Ticket für Donations!",
-                    //    emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":moneybag:"))),
-                    //
-                    //new(
-                    //    "Inhaber", "dd_TicketOwner", "Dieses Ticket geht speziell an den Inhaber des Servers!",
-                    //    emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":factory_worker:"))),
-                    //
-                    //new(
-                    //    "Bewerben", "dd_TicketApplication", "Bewerbung für das Team!",
-                    //    emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":writing_hand:")))
-                };
-
-                var ticketDropdown = new DiscordSelectComponent("ticketDropdown", "Open your Ticket here...", dropdownComponents, false, 0, 1);
-
-                var embedTicketDropdown = new DiscordMessageBuilder()
+                var embedTicketButtons = new DiscordMessageBuilder()
                     .AddEmbed(new DiscordEmbedBuilder()
-
-                    .WithColor(DiscordColor.Cyan)
-                    .WithTitle("**DarkSolutions Ticket-System**")
-                    .WithDescription("Open the Dropdown Menu and click on the Category you want to create a Ticket of")
+                        .WithTitle("**CS2 Clan Beitrittsformular**")
+                        .WithColor(DiscordColor.Orange)
+                        .WithDescription("Fülle dieses Formular aus, um dich bei uns für den CS2 Clan zu bewerben.")
+                        .WithImageUrl("https://www.memorypc.de/media/image/8d/5f/72/CS2banner_600x600.webp")
                     )
-                    .AddComponents(ticketDropdown);
+                    .AddComponents(new DiscordComponent[]
+                    {
+                        new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2Btn", "Zum Formular")
+                    });
 
-                await CmdShortener.SendAsEphemeral(ctx, "Ticketsystem successfully loaded.");
+                var response = new DiscordInteractionResponseBuilder()
+                    .AddEmbed(embedTicketButtons.Embeds[0])
+                    .AddComponents(embedTicketButtons.Components);
 
-                await ctx.Channel.SendMessageAsync(embedTicketDropdown);
+                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, response);
             }
-        }
-        
-        [SlashCommand("pogosystem", "Erschaffe das Ticketsystem für Pokemon Go")]
-        [RequireRoles(RoleCheckMode.Any, "🧰 CEO")]
-        public async Task TicketsystemPOGO(InteractionContext ctx)
-        {
-            // Pre Execution Checks
-            await CmdShortener.CheckIfUserHasCeoRole(ctx);
-
-            var dropdownComponents = new List<DiscordSelectComponentOption>()
-                {
-                    new(
-                        "Pokecoins", "dd_TicketPokecoins", "Order a Pokecoin Service!",
-                        emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":Pokecoin1:"))),
-
-                    new(
-                        "Stardust", "dd_TicketStardust", "Order a Stardust Service!",
-                        emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":Stardust:"))),
-
-                    new(
-                        "XP", "dd_TicketXp", "Order a XP Service!",
-                        emoji: new DiscordComponentEmoji(DiscordEmoji.FromName(ctx.Client, ":Level40:")))
-                };
-
-            var ticketDropdown = new DiscordSelectComponent("ticketDropdown", "Choose a Ticket", dropdownComponents, false, 0, 1);
-
-            var embedTicketDropdown = new DiscordMessageBuilder()
-                .AddEmbed(new DiscordEmbedBuilder()
-
-                .WithColor(DiscordColor.IndianRed)
-                .WithTitle("Open Ticket To Buy Service")
-                .WithDescription("Feel free to open a ticket if you want to know more about the services or if you want to order any Service.\n\n" +
-                                 "All my Services are completely safe for your account. 3 Years no Ban/Strike")
-                )
-                .AddComponents(ticketDropdown);
-
-            await CmdShortener.SendAsEphemeral(ctx, "Ticketsystem successfully loaded.");
-
-            await ctx.Channel.SendMessageAsync(embedTicketDropdown);
         }
 
         [SlashCommand("add", "Add a User to the Ticket")]
@@ -245,7 +179,7 @@ namespace DarkBot.src.SlashCommands
             if (ctx.Channel.Parent.Id != categoryId || ctx.Channel.Parent == null)
             {
                 await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
-                    new DiscordInteractionResponseBuilder().WithContent(":warning: **This Command is for Tickets only!**").AsEphemeral(true));
+                    new DiscordInteractionResponseBuilder().WithContent(":warning: **Dieser Befehl ist nur für Tickets geeignet!**").AsEphemeral(true));
 
                 return true;
             }

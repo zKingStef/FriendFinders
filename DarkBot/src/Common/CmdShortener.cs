@@ -118,9 +118,9 @@ namespace DarkBot.src.Common
 
         public static async Task CheckIfUserHasCeoRole(InteractionContext ctx)
         {
-            if (!CmdShortener.CheckRole(ctx, 978346565225816152))
+            if (!CmdShortener.CheckRole(ctx, 1209284430229803008))
             {
-                await CmdShortener.SendNotification(ctx, "No access", "You do not have the necessary permissions to execute this command.", DiscordColor.Red, 0);
+                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du benötigst die Techniker Rolle für diesen Befehl!", DiscordColor.Red, 0);
                 return;
             }
         }
@@ -128,7 +128,7 @@ namespace DarkBot.src.Common
         // Methode zur Fehlerbehandlung
         public static async Task HandleException(InteractionContext ctx, Exception e)
         {
-            string errorMessage = $"Exception occured: {e.Message}";
+            string errorMessage = $"Fehler aufgetreten: {e.Message}\n Bitte melde das Problem bei einem Techniker";
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent(errorMessage));
         }
 
