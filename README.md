@@ -1,0 +1,2 @@
+- **Join my Discord Server** | [Dark Solutions(https://discord.com/invite/F6vXb2ans6)
+- **Join the Official DSharpPlus Server** | [DSharpPlus Official Server](https://discord.com/invite/dsharpplus)
