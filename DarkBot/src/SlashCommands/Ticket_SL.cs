@@ -38,7 +38,7 @@ namespace DarkBot.src.SlashCommands
                     )
                     .AddComponents(new DiscordComponent[]
                     {
-                        new DiscordButtonComponent(ButtonStyle.Success, "ticketValoClanBtn", "Zum Formular")
+                        new DiscordButtonComponent(ButtonStyle.Success, "ticketValoClanBtn", "📩 Zum Formular")
                     });
 
                 var response = new DiscordInteractionResponseBuilder()
@@ -59,7 +59,7 @@ namespace DarkBot.src.SlashCommands
                     )
                     .AddComponents(new DiscordComponent[]
                     {
-                        new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2Btn", "Zum Formular")
+                        new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2ClanBtn", "📩 Zum Formular")
                     });
 
                 var response = new DiscordInteractionResponseBuilder()
@@ -81,8 +81,8 @@ namespace DarkBot.src.SlashCommands
 
             var embedMessage = new DiscordEmbedBuilder()
             {
-                Title = "User added!",
-                Description = $"{user.Mention} has been added to the Ticket by {ctx.User.Mention}!\n",
+                Title = "Ticket",
+                Description = $"{user.Mention} wurde zum Ticket hinzugefügt von {ctx.User.Mention}!\n",
                 Timestamp = DateTime.UtcNow
             };
             await ctx.CreateResponseAsync(embedMessage);
@@ -101,8 +101,8 @@ namespace DarkBot.src.SlashCommands
 
             var embedMessage = new DiscordEmbedBuilder()
             {
-                Title = "User removed!",
-                Description = $"{user.Mention} has been removed from the Ticket by {ctx.User.Mention}!\n",
+                Title = "Ticket",
+                Description = $"{user.Mention} wurde aus dem Ticket entfernt von {ctx.User.Mention}!\n",
                 Timestamp = DateTime.UtcNow
             };
             await ctx.CreateResponseAsync(embedMessage);
@@ -123,9 +123,9 @@ namespace DarkBot.src.SlashCommands
 
             var embedMessage = new DiscordEmbedBuilder()
             {
-                Title = "Ticket renamed!",
-                Description = $"The Ticket {ctx.Channel.Mention} has been renamed by {ctx.User.Mention}!\n\n" +
-                              $"New Ticket Name: ```{newChannelName}```",
+                Title = "Ticket",
+                Description = $"Ticket {ctx.Channel.Mention} wurde umbenannt von {ctx.User.Mention}!\n\n" +
+                              $"Neuer Ticketname: ```{newChannelName}```",
                 Timestamp = DateTime.UtcNow
             };
 
@@ -144,9 +144,9 @@ namespace DarkBot.src.SlashCommands
 
             var embedMessage = new DiscordEmbedBuilder()
             {
-                Title = "🔒 Ticket closed!",
-                Description = $"The Ticket has been closed by {ctx.User.Mention}!\n" +
-                              $"The Channel will be deleted in <t:{DateTimeOffset.UtcNow.AddSeconds(60).ToUnixTimeSeconds()}:R>.",
+                Title = "🔒 Ticket geschlossen!",
+                Description = $"Das Ticket wurde von {ctx.User.Mention} geschlossen!\n" +
+                              $"Der Kanal wird in <t:{DateTimeOffset.UtcNow.AddSeconds(60).ToUnixTimeSeconds()}:R> gelöscht.",
                 Timestamp = DateTime.UtcNow
             };
             await ctx.CreateResponseAsync(embedMessage);
@@ -169,7 +169,7 @@ namespace DarkBot.src.SlashCommands
                     .SendAsync(ctx.Guild.GetChannel(978669571483500574));
             }
 
-            await ctx.Channel.DeleteAsync("Ticket closed");
+            await ctx.Channel.DeleteAsync("Ticket geschlossen");
         }
 
         private async Task<bool> CheckIfChannelIsTicket(InteractionContext ctx)

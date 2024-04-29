@@ -18,23 +18,7 @@ namespace DarkBot.src.Handler
 
             switch (selectedOption)
             {
-                case "dd_TicketPokecoins":
-                case "dd_TicketStardust":
-                case "dd_TicketXp":
-                    Ticket_Handler.HandlePoGoTickets(e, selectedOption);
-                    break;
-                case "dd_TicketDarkSolutions":
-                case "dd_TicketSupport":
-                case "dd_TicketUnban":
-                case "dd_TicketDonation":
-                case "dd_TicketOwner":
-                case "dd_TicketApplication":
-                    Ticket_Handler.HandleGeneralTickets(e, selectedOption);
-                    break;
-                case "dd_RolePokemonGo":
-                case "dd_RoleGamer":
-                case "dd_RoleDarkServices":
-                    AutoRole_Handler.GiveRoleToUser(e, selectedOption);
+                case "Template1":
                     break;
 
                 default:
@@ -43,16 +27,15 @@ namespace DarkBot.src.Handler
 
             switch (e.Interaction.Data.CustomId)
             {
-                case "pokeDiaryPreviousDay_Btn":
-                        
-                        break;
+                case "ticketValoClanBtn":
+                    Ticket_Handler.HandleGeneralTickets(e);
+                    break;
 
-                case "pokeDiaryNextDay_Btn":
-                        
-                        break;
+                case "ticketCS2ClanBtn":
+                    Ticket_Handler.HandleGeneralTickets(e);
+                    break;
 
                 default:
-                    //await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent("Ein Fehler ist aufgetreten. Bitte kontaktiere einen <@&1210230414011011124>"));
                     break;
             }
         }
