@@ -39,10 +39,9 @@ namespace DarkBot.src.CommandHandler
                     overwrites = new List<DiscordOverwriteBuilder>
                     {
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
-                        new DiscordOverwriteBuilder(guild.GetRole(1220804206269567087)).Allow(Permissions.AccessChannels), // Bereichsleiter Valorant Rolle
-                        new DiscordOverwriteBuilder(guild.GetRole(1220804206269567087)).Allow(Permissions.SendMessages), // Bereichsleiter Valorant Rolle
-                        new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
+                        new DiscordOverwriteBuilder(guild.GetRole(1220804206269567087)).Allow(Permissions.AccessChannels), // Bereichsleiter Valorant Rolle
+                        new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                     };
                     break;
 
@@ -54,7 +53,6 @@ namespace DarkBot.src.CommandHandler
                     {
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
                         new DiscordOverwriteBuilder(guild.GetRole(1220803957560049724)).Allow(Permissions.AccessChannels), // Bereichsleiter CS2 Rolle
-                        new DiscordOverwriteBuilder(guild.GetRole(1220803957560049724)).Allow(Permissions.SendMessages), // Bereichsleiter CS2 Rolle
                         new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
                     };
@@ -77,7 +75,7 @@ namespace DarkBot.src.CommandHandler
                     .WithTitle("__" + ticketTitle + "__")
                     .WithThumbnail(guild.IconUrl)
                     .WithDescription("**In Kürze wird sich jemand um dich kümmern!**\n" +
-                                     "Sollte dein Anliegen bereits erledigt sein dann drücke auf 🔒 um dein Ticket zu Schließen!\n\n" + ticketDesc)
+                                     ticketDesc)
                     )
                     .AddComponents(closeButton, closeReasonButton, claimButton);
             await channel.SendMessageAsync(ticketMessage);

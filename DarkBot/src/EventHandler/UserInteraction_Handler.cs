@@ -28,14 +28,12 @@ namespace DarkBot.src.Handler
             switch (e.Interaction.Data.CustomId)
             {
                 case "ticketValoClanBtn":
-                    Ticket_Handler.HandleGeneralTickets(e);
-                    break;
-
                 case "ticketCS2ClanBtn":
                     Ticket_Handler.HandleGeneralTickets(e);
                     break;
 
                 default:
+                    Console.WriteLine(e.Message);
                     break;
             }
         }

@@ -24,15 +24,15 @@ namespace DarkBot.src.SlashCommands
 
             if (!member.Roles.Contains(role))
             {
-                await member.GrantRoleAsync(role);
                 await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                         .WithContent(($"Der Spieler hat die Rolle <@&{roleid}> erhalten.")).AsEphemeral(true));
+                await member.GrantRoleAsync(role);
             }
             else
             {
-                await member.RevokeRoleAsync(role);
                 await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                         .WithContent(($"Du hast dem Spieler die Rolle <@&{roleid}> entfernt.")).AsEphemeral(true));
+                await member.RevokeRoleAsync(role);
             }
         }
 
