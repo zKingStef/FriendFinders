@@ -1,13 +1,6 @@
 ﻿using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using DSharpPlus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DSharpPlus.CommandsNext.Attributes;
-using Newtonsoft.Json;
 using DarkBot.src.Common;
 
 namespace DarkBot.src.SlashCommands
@@ -21,7 +14,7 @@ namespace DarkBot.src.SlashCommands
             ulong roleid = 1183220649825685675;
             var role = ctx.Guild.GetRole(roleid);
 
-            if (!CmdShortener.CheckRole(ctx, roleid))
+            if (!CmdShortener.CheckRole(ctx, 1220804206269567087))
             {
                 await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du benötigst die Bereichsleiter Rolle für diesen Befehl!", DiscordColor.Red, 0);
                 return;
@@ -43,14 +36,14 @@ namespace DarkBot.src.SlashCommands
             }
         }
 
-        [SlashCommand("cs2newbie", "Vergib die Valo Newbie Rolle")]
+        [SlashCommand("cs2newbie", "Vergib die CS2 Newbie Rolle")]
         public static async Task CS2NewbieRole(InteractionContext ctx,
                                        [Option("User", "User")] DiscordUser user)
         {
             ulong roleid = 1220450541511905290;
             var role = ctx.Guild.GetRole(roleid);
 
-            if (!CmdShortener.CheckRole(ctx, roleid))
+            if (!CmdShortener.CheckRole(ctx, 1220803957560049724))
             {
                 await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du benötigst die Bereichsleiter Rolle für diesen Befehl!", DiscordColor.Red, 0);
                 return;
