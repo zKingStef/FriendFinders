@@ -14,46 +14,62 @@ namespace DarkBot.src.SlashCommands
 {
     public class Misc_SL : ApplicationCommandModule
     {
-        [SlashCommand("avatar", "Show User Avatar")]
-        public static async Task Avatar(InteractionContext ctx,
-                                [Option("User", "Choose any User to get their Avatar")] DiscordUser? user = null)
+        [SlashCommand("valonewbie", "Vergib die Valo Newbie Rolle")]
+        public static async Task ValoNewbieRole(InteractionContext ctx,
+                                       [Option("User", "User")] DiscordUser user)
         {
-            var targetUser = user ?? ctx.User;
-        
-            var avatarUrl = targetUser.AvatarUrl;
-        
-            var embed = new DiscordEmbedBuilder
+            ulong roleid = 1183220649825685675;
+            var role = ctx.Guild.GetRole(roleid);
+
+            if (!CmdShortener.CheckRole(ctx, roleid))
             {
-                Title = $"{targetUser.Username}'s Avatar",
-                ImageUrl = avatarUrl,
-                Color = DiscordColor.HotPink,
-                Description = ctx.User.AvatarUrl,
-            };
-        
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().AddEmbed(embed.Build()));
+                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du benötigst die Bereichsleiter Rolle für diesen Befehl!", DiscordColor.Red, 0);
+                return;
+            }
+
+            var member = await ctx.Guild.GetMemberAsync(user.Id);
+
+            if (!member.Roles.Contains(role))
+            {
+                await member.GrantRoleAsync(role);
+                await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                        .WithContent(($"Der Spieler hat die Rolle <@&{roleid}> erhalten.")).AsEphemeral(true));
+            }
+            else
+            {
+                await member.RevokeRoleAsync(role);
+                await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                        .WithContent(($"Du hast dem Spieler die Rolle <@&{roleid}> entfernt.")).AsEphemeral(true));
+            }
         }
 
-        [SlashCommand("server", "Show Server Informations")]
-        public async Task ServerEmbed(InteractionContext ctx)
+        [SlashCommand("cs2newbie", "Vergib die Valo Newbie Rolle")]
+        public static async Task CS2NewbieRole(InteractionContext ctx,
+                                       [Option("User", "User")] DiscordUser user)
         {
-            string serverDescription = $"**Servername:** {ctx.Guild.Name}\n" +
-                                        $"**Server ID:** {ctx.Guild.Id}\n" +
-                                        $"**Creation Date:** {ctx.Guild.CreationTimestamp:dd/M/yyyy}\n" +
-                                        $"**Owner:** {ctx.Guild.Owner.Mention}\n\n" +
-                                        $"**Users:** {ctx.Guild.MemberCount}\n" +
-                                        $"**Channels:** {ctx.Guild.Channels.Count}\n" +
-                                        $"**Roles:** {ctx.Guild.Roles.Count}\n" +
-                                        $"**Emojis:** {ctx.Guild.Emojis.Count}";
+            ulong roleid = 1220450541511905290;
+            var role = ctx.Guild.GetRole(roleid);
 
-            var serverInformation = new DiscordEmbedBuilder
+            if (!CmdShortener.CheckRole(ctx, roleid))
             {
-                Color = DiscordColor.Gold,
-                Title = "Server Informationen",
-                Description = serverDescription
-            };
+                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du benötigst die Bereichsleiter Rolle für diesen Befehl!", DiscordColor.Red, 0);
+                return;
+            }
 
-            var response = new DiscordInteractionResponseBuilder().AddEmbed(serverInformation.WithImageUrl(ctx.Guild.IconUrl));
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, response);
+            var member = await ctx.Guild.GetMemberAsync(ctx.User.Id);
+
+            if (!member.Roles.Contains(role))
+            {
+                await member.GrantRoleAsync(role);
+                await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                        .WithContent(($"Der Spieler hat die Rolle <@&{roleid}> erhalten.")).AsEphemeral(true));
+            }
+            else
+            {
+                await member.RevokeRoleAsync(role);
+                await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                        .WithContent(($"Du hast dem Spieler die Rolle <@&{roleid}> entfernt.")).AsEphemeral(true));
+            }
         }
     }
 }

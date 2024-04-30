@@ -14,13 +14,13 @@ namespace DarkBot.src.SlashCommands
 {
 	public class MiniGame_SL : ApplicationCommandModule
 	{
-        [SlashCommand("coinflip", "Wirf eine Münze33323")]
+        [SlashCommand("coinflip", "Wirf eine Münzi")]
         public static async Task GetCoinFlip(InteractionContext ctx)
         {
             await CmdShortener.SendResponseAsync(ctx, $":coin:  **{ctx.User.Username}** hat eine Münze geworfen und bekam **{Formatter.Bold(Convert.ToBoolean(new Random().Next(0, 2)) ? "Heads" : "Tails")}**").ConfigureAwait(false);
         }
 
-        [SlashCommand("rockpaper", "Play a game of Rock-Paper-Scissors against the Bot.")]
+        [SlashCommand("rockpaper", "Schere Stein Papier")]
         [Cooldown(1, 3, CooldownBucketType.Global)]
         public async Task SSP(InteractionContext ctx,
                              [Choice("Scissors", "Scissors")]

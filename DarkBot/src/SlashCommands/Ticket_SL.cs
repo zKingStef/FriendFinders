@@ -19,7 +19,7 @@ namespace DarkBot.src.SlashCommands
     public class Ticket_SL : ApplicationCommandModule
     {
         [SlashCommand("system", "Erschaffe das Ticket System")]
-        public  async Task Ticketsystem(InteractionContext ctx,
+        public static async Task Ticketsystem(InteractionContext ctx,
                                 [Choice("Valo", 0)]
                                 [Choice("CS2", 1)]
                                 [Option("form", "Welche Ticket Form?")] long systemChoice = 1)
@@ -29,44 +29,36 @@ namespace DarkBot.src.SlashCommands
 
             if (systemChoice == 0)
             {
-                var embedTicketButtons = new DiscordMessageBuilder()
-                    .AddEmbed(new DiscordEmbedBuilder()
-                        .WithTitle("**Valorant Clan Beitrittsformular**")
-                        .WithColor(DiscordColor.IndianRed)
-                        .WithDescription("Fülle dieses Formular aus, um dich bei uns für den Valorant Clan zu bewerben.")
-                        .WithImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png")
-                    )
-                    .AddComponents(new DiscordComponent[]
-                    {
-                        new DiscordButtonComponent(ButtonStyle.Success, "ticketValoClanBtn", "📩 Zum Formular")
-                    });
+                var embedTicketButtons = new DiscordEmbedBuilder()
+                    .WithTitle("**Valorant Clan Beitrittsformular**")
+                    .WithColor(DiscordColor.IndianRed)
+                    .WithDescription("Fülle dieses Formular aus, um dich bei uns für den Valorant Clan zu bewerben.")
+                    .WithImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Valorant_logo_-_pink_color_version.svg/1280px-Valorant_logo_-_pink_color_version.svg.png");
 
-                var response = new DiscordInteractionResponseBuilder()
-                    .AddEmbed(embedTicketButtons.Embeds[0])
-                    .AddComponents(embedTicketButtons.Components);
+                var buttonComponent = new DiscordButtonComponent(ButtonStyle.Success, "ticketValoClanBtn", "📩 Zum Formular");
 
-                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, response);
+                var messageBuilder = new DiscordMessageBuilder()
+                    .WithEmbed(embedTicketButtons)
+                    .AddComponents(buttonComponent);
+
+                await ctx.Channel.SendMessageAsync(messageBuilder);
             }
 
             else if (systemChoice == 1)
             {
-                var embedTicketButtons = new DiscordMessageBuilder()
-                    .AddEmbed(new DiscordEmbedBuilder()
-                        .WithTitle("**CS2 Clan Beitrittsformular**")
-                        .WithColor(DiscordColor.Orange)
-                        .WithDescription("Fülle dieses Formular aus, um dich bei uns für den CS2 Clan zu bewerben.")
-                        .WithImageUrl("https://www.memorypc.de/media/image/8d/5f/72/CS2banner_600x600.webp")
-                    )
-                    .AddComponents(new DiscordComponent[]
-                    {
-                        new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2ClanBtn", "📩 Zum Formular")
-                    });
+                var embedTicketButtons = new DiscordEmbedBuilder()
+                    .WithTitle("**CS2 Clan Beitrittsformular**")
+                    .WithColor(DiscordColor.Orange)
+                    .WithDescription("Fülle dieses Formular aus, um dich bei uns für den CS2 Clan zu bewerben.")
+                    .WithImageUrl("https://www.memorypc.de/media/image/8d/5f/72/CS2banner_600x600.webp");
 
-                var response = new DiscordInteractionResponseBuilder()
-                    .AddEmbed(embedTicketButtons.Embeds[0])
-                    .AddComponents(embedTicketButtons.Components);
+                var buttonComponent = new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2ClanBtn", "📩 Zum Formular");
 
-                await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, response);
+                var messageBuilder = new DiscordMessageBuilder()
+                    .WithEmbed(embedTicketButtons)
+                    .AddComponents(buttonComponent);
+
+                await ctx.Channel.SendMessageAsync(messageBuilder);
             }
         }
 

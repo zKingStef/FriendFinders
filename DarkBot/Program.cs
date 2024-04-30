@@ -12,7 +12,7 @@ namespace DarkBot
     internal sealed class Program
     {
         private static List<DarkBot> Shards { get; } = [];
-        public static BotSettings Settings { get; set; }
+        public static BotSettings? Settings { get; set; }
         private static CancellationTokenSource CancelTokenSource { get; } = new CancellationTokenSource();
 
         public static void Main(string[] args)

@@ -22,7 +22,7 @@ namespace DarkBot
 {
     internal sealed class DarkBot
     {
-        private static DiscordClient Client { get; set; }
+        private static DiscordClient? Client { get; set; }
         private IServiceProvider Services { get; }
         private static EventId EventId { get; } = new (1000, Program.Settings.Name);
         private CommandsNextExtension Commands { get; }
@@ -96,7 +96,7 @@ namespace DarkBot
             //Slash.RegisterCommands<DarkServices_SL>();
             //Slash.RegisterCommands<ImgFinder_SL>();
             Slash.RegisterCommands<MiniGame_SL>();
-            //Slash.RegisterCommands<Misc_SL>();
+            Slash.RegisterCommands<Misc_SL>();
             //Slash.RegisterCommands<Moderation_SL>();
             //Slash.RegisterCommands<PokeDiary_SL>();
             Slash.RegisterCommands<Ticket_SL>();
