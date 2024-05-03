@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DarkBot.src.CommandHandler;
+using DSharpPlus.Interactivity.Extensions;
 
 namespace DarkBot.src.Handler
 {
@@ -29,13 +30,37 @@ namespace DarkBot.src.Handler
             {
                 case "ticketValoClanBtn":
                 case "ticketCS2ClanBtn":
-                    Ticket_Handler.HandleGeneralTickets(e);
+                    await CreateModal(e);
+                    await Ticket_Handler.HandleGeneralTickets(e);
                     break;
 
                 default:
                     Console.WriteLine(e.Message);
                     break;
             }
+        }
+
+        public static async Task HandleModal(DiscordClient client, ModalSubmitEventArgs e)
+        {
+            if (e.Interaction.Type == InteractionType.ModalSubmit)
+            {
+                var values = e.Values;
+                await e.Interaction.CreateResponseAsync(    InteractionResponseType.ChannelMessageWithSource, 
+                                                            new DiscordInteractionResponseBuilder().WithContent(
+                                                            $"{e.Interaction.User.Username} hat ein Ticket eröffnet!\n{values.First()}"));
+            }
+        }
+
+        private static async Task CreateModal(ComponentInteractionCreateEventArgs e)
+        {
+            var modal = new DiscordInteractionResponseBuilder()
+                .WithTitle("Beitrittsformular")
+                .WithCustomId("modalClan")
+                .AddComponents(
+                    new TextInputComponent(label: "Kurze Vorstellung von dir", customId: "vorstellTextBox", value: "")
+                );
+
+            await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
     }
 }

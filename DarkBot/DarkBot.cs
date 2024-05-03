@@ -104,6 +104,7 @@ namespace DarkBot
             Slash.SlashCommandErrored += SlashCommandErrored;
 
             Client.ComponentInteractionCreated += UserInteraction_Handler.HandleInteraction;
+            Client.ModalSubmitted += UserInteraction_Handler.HandleModal;
 
             Client.GuildMemberAdded += JoinLeaveLogs.UserJoin;
             Client.GuildMemberRemoved += JoinLeaveLogs.UserLeave;

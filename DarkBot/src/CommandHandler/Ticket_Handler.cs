@@ -10,7 +10,7 @@ namespace DarkBot.src.CommandHandler
 {
     public class Ticket_Handler
     {
-        public static async void HandleGeneralTickets(ComponentInteractionCreateEventArgs e)
+        public static async Task HandleGeneralTickets(ComponentInteractionCreateEventArgs e)
         {
             DiscordMember? user = e.User as DiscordMember;
             DiscordGuild guild = e.Guild;
@@ -22,18 +22,19 @@ namespace DarkBot.src.CommandHandler
                 return;
             }
 
-            string ticketDesc = "ERROR";
-            string ticketTitle = "ERROR";
             var overwrites = new List<DiscordOverwriteBuilder>
             {
                 new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
                 new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
             };
 
+            string ticketDesc = "Fehler!";
+            string ticketTitle = "Fehler!";
+
             switch (e.Interaction.Data.CustomId)
             {
                 case "ticketValoClanBtn":
-                    ticketDesc = "Tdwdwd";
+                    ticketDesc = "Hallo";
                     ticketTitle = "Valorant Clan Bewerbung";
 
                     overwrites = new List<DiscordOverwriteBuilder>
