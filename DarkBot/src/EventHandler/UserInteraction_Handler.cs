@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DarkBot.src.CommandHandler;
 using DSharpPlus.Interactivity.Extensions;
+using Microsoft.Extensions.Options;
+using System.ComponentModel.Design;
 
 namespace DarkBot.src.Handler
 {
@@ -29,9 +31,10 @@ namespace DarkBot.src.Handler
             switch (e.Interaction.Data.CustomId)
             {
                 case "ticketValoClanBtn":
+                    await CreateModal(e, "modalValoClanForm");
+                    break;
                 case "ticketCS2ClanBtn":
-                    await CreateModal(e);
-                    await Ticket_Handler.HandleGeneralTickets(e);
+                    await CreateModal(e, "modalCS2ClanForm");
                     break;
 
                 default:
@@ -42,22 +45,21 @@ namespace DarkBot.src.Handler
 
         public static async Task HandleModal(DiscordClient client, ModalSubmitEventArgs e)
         {
-            if (e.Interaction.Type == InteractionType.ModalSubmit)
+            if (e.Interaction.Type == InteractionType.ModalSubmit 
+             && e.Interaction.Data.CustomId == "modalValoClanForm" 
+             || e.Interaction.Data.CustomId == "modalCS2ClanForm")
             {
-                var values = e.Values;
-                await e.Interaction.CreateResponseAsync(    InteractionResponseType.ChannelMessageWithSource, 
-                                                            new DiscordInteractionResponseBuilder().WithContent(
-                                                            $"{e.Interaction.User.Username} hat ein Ticket eröffnet!\n{values.First()}"));
+                await Ticket_Handler.HandleGeneralTickets(e);
             }
         }
 
-        private static async Task CreateModal(ComponentInteractionCreateEventArgs e)
+        private static async Task CreateModal(ComponentInteractionCreateEventArgs e, string modalId)
         {
             var modal = new DiscordInteractionResponseBuilder()
-                .WithTitle("Beitrittsformular")
-                .WithCustomId("modalClan")
+                .WithTitle("Clan Beitrittsformular")
+                .WithCustomId(modalId)
                 .AddComponents(
-                    new TextInputComponent(label: "Kurze Vorstellung von dir", customId: "vorstellTextBox", value: "")
+                    new TextInputComponent(label: "Kurze Vorstellung von dir...", customId: "vorstellTextBox", value: "")
                 );
 
             await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);

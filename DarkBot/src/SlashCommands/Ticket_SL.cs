@@ -157,8 +157,8 @@ namespace DarkBot.src.SlashCommands
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content.ToString())))
             {
                 var msg = await new DiscordMessageBuilder()
-                    .AddFile("transript.txt", memoryStream)
-                    .SendAsync(ctx.Guild.GetChannel(978669571483500574));
+                    .AddFile("ticketLog.txt", memoryStream)
+                    .SendAsync(ctx.Guild.GetChannel(1209297588915015730));
             }
 
             await ctx.Channel.DeleteAsync("Ticket geschlossen");
@@ -166,7 +166,7 @@ namespace DarkBot.src.SlashCommands
 
         private async Task<bool> CheckIfChannelIsTicket(InteractionContext ctx)
         {
-            const ulong categoryId = 1207086767623381092;
+            const ulong categoryId = 1197912790208356422;
 
             if (ctx.Channel.Parent.Id != categoryId || ctx.Channel.Parent == null)
             {
