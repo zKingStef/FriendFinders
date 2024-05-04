@@ -103,9 +103,9 @@ namespace DarkBot.src.CommandHandler
             if (!CmdShortener.CheckRole(ctx, 1183217936513630229) // Gründer Rolle
              && !CmdShortener.CheckRole(ctx, 1209284430229803008) // Techniker Rolle
              && !CmdShortener.CheckRole(ctx, 1220803957560049724) // CS2 Bereichsleiter
-             && !CmdShortener.CheckRole(ctx, 1209284430229803008)) // Valo Bereichsleiter 
+             && !CmdShortener.CheckRole(ctx, 1220804206269567087)) // Valo Bereichsleiter 
             {
-                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du bist nicht die nötigen Rechte, um Ticketbefehle zu verweden!", DiscordColor.Red, 0);
+                await CmdShortener.SendNotification(ctx, "Keine Rechte", "Du hast nicht die nötigen Rechte, um Ticketbefehle zu verweden!", DiscordColor.Red, 0);
                 return;
             }
         }
