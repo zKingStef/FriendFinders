@@ -10,6 +10,7 @@ using DarkBot.src.CommandHandler;
 using DSharpPlus.Interactivity.Extensions;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.Design;
+using DarkBot.src.Common;
 
 namespace DarkBot.src.Handler
 {
@@ -31,38 +32,30 @@ namespace DarkBot.src.Handler
             switch (e.Interaction.Data.CustomId)
             {
                 case "ticketValoClanBtn":
-                    await CreateModal(e, "modalValoClanForm");
+                    await Modals.CreateClanModal(e, "modalValoClanForm");
                     break;
                 case "ticketCS2ClanBtn":
-                    await CreateModal(e, "modalCS2ClanForm");
+                    await Modals.CreateClanModal(e, "modalCS2ClanForm");
+                    break;
+                case "claimTicketButton":
+                    if (Ticket_Handler.CheckIfUserHasTicketPermissions(e))
+                    { 
+                        await Ticket_Handler.RemoveClaimButtonAsync(e);
+                        await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource,
+                        new DiscordInteractionResponseBuilder().WithContent($"Das Ticket wird jetzt von {e.User.Mention} bearbeitet"));
+                    }
+                    break;
+                case "closeTicketButton":
+                    await Ticket_Handler.CloseTicket(e);
+                    break;
+                case "closeReasonTicketButton":
+                    await Modals.CreateReasonModal(e, "modalCloseReasonForm");
                     break;
 
                 default:
                     Console.WriteLine(e.Message);
                     break;
             }
-        }
-
-        public static async Task HandleModal(DiscordClient client, ModalSubmitEventArgs e)
-        {
-            if (e.Interaction.Type == InteractionType.ModalSubmit 
-             && e.Interaction.Data.CustomId == "modalValoClanForm" 
-             || e.Interaction.Data.CustomId == "modalCS2ClanForm")
-            {
-                await Ticket_Handler.HandleGeneralTickets(e);
-            }
-        }
-
-        private static async Task CreateModal(ComponentInteractionCreateEventArgs e, string modalId)
-        {
-            var modal = new DiscordInteractionResponseBuilder()
-                .WithTitle("Clan Beitrittsformular")
-                .WithCustomId(modalId)
-                .AddComponents(
-                    new TextInputComponent(label: "Kurze Vorstellung von dir...", customId: "vorstellTextBox", value: "")
-                );
-
-            await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
     }
 }

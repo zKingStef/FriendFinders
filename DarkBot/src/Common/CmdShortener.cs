@@ -12,6 +12,7 @@ using DSharpPlus.Interactivity;
 using DSharpPlus.Interactivity.Extensions;
 using System.IO;
 using System.Net.Http;
+using DSharpPlus.EventArgs;
 
 namespace DarkBot.src.Common
 {
@@ -41,7 +42,22 @@ namespace DarkBot.src.Common
         }
 
         public static async Task SendAsEphemeral(InteractionContext ctx,
-                                                  string text)
+                                                 string text)
+        {
+            await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                     .WithContent((text)).AsEphemeral(true));
+        }
+        
+
+        public static async Task SendAsEphemeral(ComponentInteractionCreateEventArgs ctx,
+                                                 string text)
+        {
+            await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
+                                                     .WithContent((text)).AsEphemeral(true));
+        }
+
+        public static async Task SendAsEphemeral(ModalSubmitEventArgs ctx,
+                                                 string text)
         {
             await ctx.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
                                                      .WithContent((text)).AsEphemeral(true));
@@ -114,6 +130,26 @@ namespace DarkBot.src.Common
         {
             var member = ctx.Member;
             return member.Roles.Any(r => r.Id == roleId);
+        }
+
+        public static bool CheckRole(ComponentInteractionCreateEventArgs ctx, ulong roleId)
+        {
+            var user = ctx.User;
+            if (user is DiscordMember member)
+            {
+                return member.Roles.Any(r => r.Id == roleId);
+            }
+            return false; 
+        }
+
+        public static bool CheckRole(ModalSubmitEventArgs ctx, ulong roleId)
+        {
+            var user = ctx.Interaction.User;
+            if (user is DiscordMember member)
+            {
+                return member.Roles.Any(r => r.Id == roleId);
+            }
+            return false;
         }
 
         public static async Task CheckIfUserHasCeoRole(InteractionContext ctx)

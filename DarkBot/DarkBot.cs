@@ -1,4 +1,5 @@
-﻿using DarkBot.src.Handler;
+﻿using DarkBot.src.Common;
+using DarkBot.src.Handler;
 using DarkBot.src.Logs;
 
 //using DarkBot.src.Logs;
@@ -104,7 +105,7 @@ namespace DarkBot
             Slash.SlashCommandErrored += SlashCommandErrored;
 
             Client.ComponentInteractionCreated += UserInteraction_Handler.HandleInteraction;
-            Client.ModalSubmitted += UserInteraction_Handler.HandleModal;
+            Client.ModalSubmitted += Modals.HandleModal;
 
             Client.GuildMemberAdded += JoinLeaveLogs.UserJoin;
             Client.GuildMemberRemoved += JoinLeaveLogs.UserLeave;
