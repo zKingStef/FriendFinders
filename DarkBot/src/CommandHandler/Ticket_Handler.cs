@@ -90,17 +90,15 @@ namespace DarkBot.src.CommandHandler
             var closeReasonButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeReasonTicketButton", "🔒 Schließen mit Begründung");
             var claimButton = new DiscordButtonComponent(ButtonStyle.Primary, "claimTicketButton", "☑️ Beanspruchen");
 
-            
-
             var ticketEmbed = new DiscordMessageBuilder()
                     .AddEmbed(new DiscordEmbedBuilder()
                     .WithColor(DiscordColor.Cyan)
                     .WithTitle("__" + ticketTitle + "__")
                     .WithThumbnail(guild.IconUrl)
-                    .WithDescription($"**Name/Ingamename:**\n" +
-                                     $"**Alter:**\n" +
-                                     $"**Aktueller Rank:**\n" +
-                                     $"**Kurze Vorstellung:**\n{e.Values.Values.First()}\n\n" +
+                    .WithDescription($"**Name / Ingamename:** {e.Values["nameTextBox"]}\n" +
+                                     $"**Alter:** {e.Values["ageTextBox"]}\n" +
+                                     $"**Aktueller Rank:** {e.Values["rankTextBox"]}\n" +
+                                     $"**Kurze Vorstellung:** {e.Values["vorstellTextBox"]}\n\n" +
                                      $"{ticketDesc}"))
                     .AddComponents(closeButton, closeReasonButton, claimButton);
             await ticketChannel.SendMessageAsync($"||{user.Mention}||");
@@ -166,7 +164,7 @@ namespace DarkBot.src.CommandHandler
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content.ToString())))
             {
                 var msg = await new DiscordMessageBuilder()
-                    .AddFile("ticketLog.txt", memoryStream)
+                    .AddFile($"{e.Interaction.Channel.Name}.txt", memoryStream)
                     .SendAsync(e.Guild.GetChannel(1209297588915015730));
             }
 
@@ -205,7 +203,7 @@ namespace DarkBot.src.CommandHandler
             using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content.ToString())))
             {
                 var msg = await new DiscordMessageBuilder()
-                    .AddFile("ticketLog.txt", memoryStream)
+                    .AddFile($"{e.Interaction.Channel.Name}.txt", memoryStream)
                     .SendAsync(e.Interaction.Guild.GetChannel(1209297588915015730));
             }
 

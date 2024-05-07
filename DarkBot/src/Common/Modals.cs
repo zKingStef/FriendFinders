@@ -31,9 +31,15 @@ namespace DarkBot.src.Common
                 .WithTitle("Clan Beitrittsformular")
                 .WithCustomId(modalId)
                 .AddComponents(
-                    new TextInputComponent(label: "Kurze Vorstellung von dir", customId: "vorstellTextBox", value: "")
-                );
-            
+                    new TextInputComponent("Name / Ingamename",  "nameTextBox", value: ""))
+                .AddComponents(
+                    new TextInputComponent("Dein aktueller Rank", "rankTextBox", value: ""))
+                .AddComponents(
+                new TextInputComponent("Dein Alter", "ageTextBox", value: ""))
+                .AddComponents(
+                new TextInputComponent("Kurze Vorstellung von dir", "vorstellTextBox", value: ""));
+
+
             await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }
 
