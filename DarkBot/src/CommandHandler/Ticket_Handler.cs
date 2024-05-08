@@ -29,80 +29,110 @@ namespace DarkBot.src.CommandHandler
                 return;
             }
 
+            string ticketDesc = "Fehler! Bite melde das bei einem Techniker";
+            string ticketTitle = "Fehler!";
+            ulong roleId = 999999999999;
+            var closeButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeTicketButton", "🔒 Schließen");
+            var closeReasonButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeReasonTicketButton", "🔒 Schließen mit Begründung");
+            var claimButton = new DiscordButtonComponent(ButtonStyle.Primary, "claimTicketButton", "☑️ Beanspruchen");
+
             var overwrites = new List<DiscordOverwriteBuilder>
             {
                 new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
                 new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
             };
 
-            string ticketDesc = "Fehler! Bite melde das bei einem Techniker";
-            string ticketTitle = "Fehler!";
-
             switch (e.Interaction.Data.CustomId)
             {
                 case "modalValoClanForm":
-                    ticketDesc = "Der Bereichsleiter wird sich sobald wie möglich um deine Bewerbung kümmern!";
+                    ticketDesc = $"**Name / Ingamename:** {e.Values["nameTextBox"]}\n" +
+                                 $"**Alter:** {e.Values["ageTextBox"]}\n" +
+                                 $"**Aktueller Rank:** {e.Values["rankTextBox"]}\n" +
+                                 $"**Kurze Vorstellung:** {e.Values["vorstellTextBox"]}\n\n" +
+                                 "Der __Bereichsleiter__ wird sich sobald wie möglich um deine Bewerbung kümmern!";
                     ticketTitle = "Valorant Clan Bewerbung";
 
-                    overwrites = new List<DiscordOverwriteBuilder>
-                    {
+                    roleId = 1220804206269567087;
+
+                    overwrites =
+                    [
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
-                        new DiscordOverwriteBuilder(guild.GetRole(1220804206269567087)).Allow(Permissions.AccessChannels), // Bereichsleiter Valorant Rolle
+                        new DiscordOverwriteBuilder(guild.GetRole(roleId)).Allow(Permissions.AccessChannels), // Bereichsleiter Valorant Rolle
                         new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
-                    };
+                    ];
                     break;
 
                 case "modalCS2ClanForm":
-                    ticketDesc = "Der Bereichsleiter wird sich sobald wie möglich um deine Bewerbung kümmern!";
+                    ticketDesc = $"**Name / Ingamename:** {e.Values["nameTextBox"]}\n" +
+                                 $"**Alter:** {e.Values["ageTextBox"]}\n" +
+                                 $"**Aktueller Rank:** {e.Values["rankTextBox"]}\n" +
+                                 $"**Kurze Vorstellung:** {e.Values["vorstellTextBox"]}\n\n" +
+                                 "Der __Bereichsleiter__ wird sich sobald wie möglich um deine Bewerbung kümmern!";
                     ticketTitle = "CS2 Clan Bewerbung";
 
-                    overwrites = new List<DiscordOverwriteBuilder>
-                    {
+                    roleId = 1220803957560049724;
+
+                    overwrites =
+                    [
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
                         new DiscordOverwriteBuilder(guild.GetRole(1220803957560049724)).Allow(Permissions.AccessChannels), // Bereichsleiter CS2 Rolle
                         new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
-                    };
+                    ];
+                    break;
+
+                case "modalCoachingForm":
+                    ticketDesc = $"**Aktuelle Elo:** {e.Values["eloTextBox"]}\n" +
+                                 $"**Ich möchte folgendes trainieren:** {e.Values["whatTextBox"]}\n" +
+                                 $"**An diesen Tagen habe ich Zeit:** {e.Values["dayTextBox"]}\n\n" +
+                                 "Ein __Coach__ wird sich sobald wie möglich bei dir melden!";
+                    ticketTitle = "Valorant Coaching";
+
+                    roleId = 1207357073025794079;
+
+                    overwrites =
+                    [
+                        new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
+                        new DiscordOverwriteBuilder(guild.GetRole(1207357073025794079)).Allow(Permissions.AccessChannels), // Coach Rolle Rolle
+                        new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
+                        new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
+                    ];
                     break;
             }
 
             DiscordChannel ticketChannel = await guild.CreateTextChannelAsync($"{e.Interaction.User.Username}-Ticket", category, overwrites: overwrites, position: 0);
 
-            var random = new Random();
+            //var random = new Random();
+            //
+            //ulong minValue = 1000000000000000000;
+            //ulong maxValue = 9999999999999999999;
+            //
+            //ulong randomNumber = (ulong)random.Next((int)(minValue >> 32), int.MaxValue) << 32 | (ulong) random.Next(); 
+            //ulong result = randomNumber % (maxValue - minValue + 1) + minValue;
 
-            ulong minValue = 1000000000000000000;
-            ulong maxValue = 9999999999999999999;
-
-            ulong randomNumber = (ulong)random.Next((int)(minValue >> 32), int.MaxValue) << 32 | (ulong) random.Next(); 
-            ulong result = randomNumber % (maxValue - minValue + 1) + minValue;
-
-            var supportTicket = new Ticket_Handler()
-            {
-                username = e.Interaction.User.Username,
-                issue = e.Values.Values.First(),
-                ticketId = result
-            };
+            //var supportTicket = new Ticket_Handler()
+            //{
+            //    username = e.Interaction.User.Username,
+            //    issue = e.Values.Values.First(),
+            //    ticketId = 1 //result
+            //};
 
             await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent($"Ticket erstellt: {ticketChannel.Mention}").AsEphemeral(true));
-
-            var closeButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeTicketButton", "🔒 Schließen");
-            var closeReasonButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeReasonTicketButton", "🔒 Schließen mit Begründung");
-            var claimButton = new DiscordButtonComponent(ButtonStyle.Primary, "claimTicketButton", "☑️ Beanspruchen");
 
             var ticketEmbed = new DiscordMessageBuilder()
                     .AddEmbed(new DiscordEmbedBuilder()
                     .WithColor(DiscordColor.Cyan)
-                    .WithTitle("__" + ticketTitle + "__")
+                    .WithTitle($"__{ticketTitle}__")
                     .WithThumbnail(guild.IconUrl)
-                    .WithDescription($"**Name / Ingamename:** {e.Values["nameTextBox"]}\n" +
-                                     $"**Alter:** {e.Values["ageTextBox"]}\n" +
-                                     $"**Aktueller Rank:** {e.Values["rankTextBox"]}\n" +
-                                     $"**Kurze Vorstellung:** {e.Values["vorstellTextBox"]}\n\n" +
-                                     $"{ticketDesc}"))
+                    .WithDescription(ticketDesc))
                     .AddComponents(closeButton, closeReasonButton, claimButton);
-            await ticketChannel.SendMessageAsync($"||{user.Mention}||");
-            ticketMessage = await ticketChannel.SendMessageAsync(ticketEmbed);
+
+            // Mention the User in the Chat and then remove the Message
+            var mentionMessage = await ticketChannel.SendMessageAsync(user.Mention + $"<@&{roleId}>");
+            await ticketChannel.DeleteMessageAsync(mentionMessage);
+
+            await ticketChannel.SendMessageAsync(ticketEmbed);
         }
 
         public static async Task RemoveClaimButtonAsync(ComponentInteractionCreateEventArgs e)

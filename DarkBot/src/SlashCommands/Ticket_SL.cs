@@ -20,8 +20,9 @@ namespace DarkBot.src.SlashCommands
     {
         [SlashCommand("system", "Erschaffe das Ticket System")]
         public static async Task Ticketsystem(InteractionContext ctx,
-                                [Choice("Valo", 0)]
+                                [Choice("Valorant", 0)]
                                 [Choice("CS2", 1)]
+                                [Choice("Coaching", 2)]
                                 [Option("form", "Welche Ticket Form?")] long systemChoice = 1)
         {
             // Pre Execution Checks
@@ -43,7 +44,6 @@ namespace DarkBot.src.SlashCommands
 
                 await ctx.Channel.SendMessageAsync(messageBuilder);
             }
-
             else if (systemChoice == 1)
             {
                 var embedTicketButtons = new DiscordEmbedBuilder()
@@ -53,6 +53,24 @@ namespace DarkBot.src.SlashCommands
                     .WithImageUrl("https://www.memorypc.de/media/image/8d/5f/72/CS2banner_600x600.webp");
 
                 var buttonComponent = new DiscordButtonComponent(ButtonStyle.Success, "ticketCS2ClanBtn", "📩 Zum Formular");
+
+                var messageBuilder = new DiscordMessageBuilder()
+                    .WithEmbed(embedTicketButtons)
+                    .AddComponents(buttonComponent);
+
+                await ctx.Channel.SendMessageAsync(messageBuilder);
+            }
+            else if (systemChoice == 2)
+            {
+                var embedTicketButtons = new DiscordEmbedBuilder()
+                    .WithTitle("**Brauchst du ein Coaching?**")
+                    .WithColor(DiscordColor.Cyan)
+                    .WithDescription("Bitte fülle das Formular aus, wenn du ein Coaching benötigst. Der Coach wird sich dann bei dir melden ♥")
+                    .WithImageUrl("https://images-ext-1.discordapp.net/external/R7NIprUQ0yyHF4s15P_ADQOjhW2N0RWUYSonIBwcirY/https/i.ebayimg.com/images/g/vxAAAOSwDNRh7~Tl/s-l1600.jpg?format=webp&width=1022&height=600");
+
+                var customEmoji = new DiscordComponentEmoji(1183224223053922304);
+                var buttonComponent = new DiscordButtonComponent(ButtonStyle.Success, "ticketCoachingBtn", "Trainings-Formular", emoji: customEmoji);
+
 
                 var messageBuilder = new DiscordMessageBuilder()
                     .WithEmbed(embedTicketButtons)

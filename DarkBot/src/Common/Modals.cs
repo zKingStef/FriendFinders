@@ -22,9 +22,14 @@ namespace DarkBot.src.Common
             {
                 await Ticket_Handler.CloseTicket(e);
             }
+            if (e.Interaction.Type == InteractionType.ModalSubmit
+             && e.Interaction.Data.CustomId == "modalCoachingForm")
+            {
+                await Ticket_Handler.HandleGeneralTickets(e);
+            }
 
         }
-
+        
         public static async Task CreateClanModal(ComponentInteractionCreateEventArgs e, string modalId)
         {
             var modal = new DiscordInteractionResponseBuilder()
@@ -39,6 +44,20 @@ namespace DarkBot.src.Common
                 .AddComponents(
                 new TextInputComponent("Kurze Vorstellung von dir", "vorstellTextBox", value: ""));
 
+            await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
+        }
+
+        public static async Task CreateCoachingModal(ComponentInteractionCreateEventArgs e, string modalId)
+        {
+            var modal = new DiscordInteractionResponseBuilder()
+                .WithTitle("Training beantragen")
+                .WithCustomId(modalId)
+                .AddComponents(
+                    new TextInputComponent("Welche Elo bist du aktuell", "eloTextBox", value: ""))
+                .AddComponents(
+                    new TextInputComponent("Was soll trainiert werden", "whatTextBox", value: ""))
+                .AddComponents(
+                    new TextInputComponent("Nenne 3 Tage an den zu Zeit hast", "dayTextBox", value: ""));
 
             await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
         }

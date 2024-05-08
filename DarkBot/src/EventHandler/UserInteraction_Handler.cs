@@ -35,7 +35,10 @@ namespace DarkBot.src.Handler
                     await Modals.CreateClanModal(e, "modalValoClanForm");
                     break;
                 case "ticketCS2ClanBtn":
-                    await Modals.CreateClanModal(e, "modalCS2ClanForm");
+                    await Modals.CreateClanModal(e, "modalCS2ClanForm"); 
+                    break;
+                case "ticketCoachingBtn":
+                    await Modals.CreateCoachingModal(e, "modalCoachingForm"); 
                     break;
                 case "claimTicketButton":
                     if (Ticket_Handler.CheckIfUserHasTicketPermissions(e))
