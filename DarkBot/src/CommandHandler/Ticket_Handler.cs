@@ -100,7 +100,7 @@ namespace DarkBot.src.CommandHandler
                     ];
                     break;
                 case "modalTechnicForm":
-                    ticketDesc = $"**Problem:** {e.Values["issueTextbox"]}\n\n" +
+                    ticketDesc = $"**Problem:** {e.Values["issueTextBox"]}\n\n" +
                                  "Danke für deine Anfrage. Wir werden uns sobald wie möglich bei dir melden!";
                     ticketTitle = "Technische Hilfe";
 
