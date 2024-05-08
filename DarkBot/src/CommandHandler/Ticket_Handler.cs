@@ -94,7 +94,22 @@ namespace DarkBot.src.CommandHandler
                     overwrites =
                     [
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
-                        new DiscordOverwriteBuilder(guild.GetRole(1207357073025794079)).Allow(Permissions.AccessChannels), // Coach Rolle Rolle
+                        new DiscordOverwriteBuilder(guild.GetRole(1207357073025794079)).Allow(Permissions.AccessChannels), // Coach Rolle
+                        new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
+                        new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
+                    ];
+                    break;
+                case "modalTechnicForm":
+                    ticketDesc = $"**Problem:** {e.Values["issueTextbox"]}\n\n" +
+                                 "Danke für deine Anfrage. Wir werden uns sobald wie möglich bei dir melden!";
+                    ticketTitle = "Technische Hilfe";
+
+                    roleId = 1209284430229803008;
+
+                    overwrites =
+                    [
+                        new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
+                        new DiscordOverwriteBuilder(guild.GetRole(1183217936513630229)).Allow(Permissions.AccessChannels), // Gründer Rolle
                         new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
                     ];

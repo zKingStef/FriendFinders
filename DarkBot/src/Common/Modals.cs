@@ -25,7 +25,12 @@ namespace DarkBot.src.Common
             if (e.Interaction.Type == InteractionType.ModalSubmit
              && e.Interaction.Data.CustomId == "modalCoachingForm")
             {
-                await Ticket_Handler.HandleGeneralTickets(e);
+                await Ticket_Handler.HandleGeneralTickets(e); 
+            }
+            if (e.Interaction.Type == InteractionType.ModalSubmit
+             && e.Interaction.Data.CustomId == "modalTechnicForm")
+            {
+                await Ticket_Handler.HandleGeneralTickets(e); 
             }
 
         }
@@ -69,6 +74,18 @@ namespace DarkBot.src.Common
                 .WithCustomId(modalId)
                 .AddComponents(
                     new TextInputComponent(label: "Grund", customId: "closeReasonTextBox", value: "")
+                );
+
+            await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);
+        }
+
+        public static async Task CreateTechnicModal(ComponentInteractionCreateEventArgs e, string modalId)
+        {
+            var modal = new DiscordInteractionResponseBuilder()
+                .WithTitle("Technische Hilfe")
+                .WithCustomId(modalId)
+                .AddComponents(
+                    new TextInputComponent(label: "Beschreibe dein Problem", customId: "issueTextBox", value: "")
                 );
 
             await e.Interaction.CreateResponseAsync(InteractionResponseType.Modal, modal);

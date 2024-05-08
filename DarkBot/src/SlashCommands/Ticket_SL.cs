@@ -23,7 +23,8 @@ namespace DarkBot.src.SlashCommands
                                 [Choice("Valorant", 0)]
                                 [Choice("CS2", 1)]
                                 [Choice("Coaching", 2)]
-                                [Option("form", "Welche Ticket Form?")] long systemChoice = 1)
+                                [Choice("Technik", 3)]
+                                [Option("form", "Welche Ticket Form?")] long systemChoice)
         {
             // Pre Execution Checks
             await CmdShortener.CheckIfUserHasCeoRole(ctx);
@@ -71,6 +72,22 @@ namespace DarkBot.src.SlashCommands
                 var customEmoji = new DiscordComponentEmoji(1183224223053922304);
                 var buttonComponent = new DiscordButtonComponent(ButtonStyle.Success, "ticketCoachingBtn", "Trainings-Formular", emoji: customEmoji);
 
+
+                var messageBuilder = new DiscordMessageBuilder()
+                    .WithEmbed(embedTicketButtons)
+                    .AddComponents(buttonComponent);
+
+                await ctx.Channel.SendMessageAsync(messageBuilder);
+            }
+            else if (systemChoice == 3)
+            {
+                var embedTicketButtons = new DiscordEmbedBuilder()
+                    .WithTitle("**Brauchst du Technische Hilfe?**")
+                    .WithColor(DiscordColor.IndianRed)
+                    .WithDescription("Wenn du Probleme mit deinem Setup, Discord oder anderen technischen Angelegenheiten hast, melde dich einfach. Möglicherweise können wir dir helfen. ♥")
+                    .WithImageUrl("https://images-ext-1.discordapp.net/external/Jdnbl3ct8nnd1sr8sjwB6ICWY42-syelZ2cn_R0sLEU/https/www.vhv.rs/dpng/f/162-1626512_contact-support-icon-transparent-hd-png-download.png?format=webp&quality=lossless&width=600&height=600");
+
+                var buttonComponent = new DiscordButtonComponent(ButtonStyle.Danger, "ticketTechnicBtn", "🛠️ Technische Hilfe");
 
                 var messageBuilder = new DiscordMessageBuilder()
                     .WithEmbed(embedTicketButtons)
@@ -152,34 +169,34 @@ namespace DarkBot.src.SlashCommands
             await Ticket_Handler.CheckIfUserHasTicketPermissions(ctx);
             await CheckIfChannelIsTicket(ctx);
 
-            var embedMessage = new DiscordEmbedBuilder()
-            {
-                Title = "🔒 Ticket geschlossen!",
-                Description = $"Das Ticket wurde von {ctx.User.Mention} geschlossen!\n" +
-                              $"Der Kanal wird in <t:{DateTimeOffset.UtcNow.AddSeconds(60).ToUnixTimeSeconds()}:R> gelöscht.",
-                Timestamp = DateTime.UtcNow
-            };
-            await ctx.CreateResponseAsync(embedMessage);
-
-            var messages = await ctx.Channel.GetMessagesAsync(999);
-
-            var content = new StringBuilder();
-            content.AppendLine($"Transcript Ticket {ctx.Channel.Name}:");
-            foreach (var message in messages)
-            {
-                content.AppendLine($"{message.Author.Username} ({message.Author.Id}) - {message.Content}");
-            }
-
-            await Task.Delay(TimeSpan.FromSeconds(60));
-
-            using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content.ToString())))
-            {
-                var msg = await new DiscordMessageBuilder()
-                    .AddFile("ticketLog.txt", memoryStream)
-                    .SendAsync(ctx.Guild.GetChannel(1209297588915015730));
-            }
-
-            await ctx.Channel.DeleteAsync("Ticket geschlossen");
+            //var embedMessage = new DiscordEmbedBuilder()
+            //{
+            //    Title = "🔒 Ticket geschlossen!",
+            //    Description = $"Das Ticket wurde von {ctx.User.Mention} geschlossen!\n" +
+            //                  $"Der Kanal wird in <t:{DateTimeOffset.UtcNow.AddSeconds(60).ToUnixTimeSeconds()}:R> gelöscht.",
+            //    Timestamp = DateTime.UtcNow
+            //};
+            //await ctx.CreateResponseAsync(embedMessage);
+            //
+            //var messages = await ctx.Channel.GetMessagesAsync(999);
+            //
+            //var content = new StringBuilder();
+            //content.AppendLine($"Transcript Ticket {ctx.Channel.Name}:");
+            //foreach (var message in messages)
+            //{
+            //    content.AppendLine($"{message.Author.Username} ({message.Author.Id}) - {message.Content}");
+            //}
+            //
+            //await Task.Delay(TimeSpan.FromSeconds(60));
+            //
+            //using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(content.ToString())))
+            //{
+            //    var msg = await new DiscordMessageBuilder()
+            //        .AddFile("ticketLog.txt", memoryStream)
+            //        .SendAsync(ctx.Guild.GetChannel(1209297588915015730));
+            //}
+            //
+            //await ctx.Channel.DeleteAsync("Ticket geschlossen");
         }
 
         private async Task<bool> CheckIfChannelIsTicket(InteractionContext ctx)

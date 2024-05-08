@@ -40,6 +40,9 @@ namespace DarkBot.src.Handler
                 case "ticketCoachingBtn":
                     await Modals.CreateCoachingModal(e, "modalCoachingForm"); 
                     break;
+                case "ticketTechnicBtn":
+                    await Modals.CreateTechnicModal(e, "modalTechnicForm"); 
+                    break;
                 case "claimTicketButton":
                     if (Ticket_Handler.CheckIfUserHasTicketPermissions(e))
                     { 
