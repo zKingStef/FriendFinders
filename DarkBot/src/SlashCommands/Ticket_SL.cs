@@ -18,13 +18,13 @@ namespace DarkBot.src.SlashCommands
     [SlashCommandGroup("ticket", "Alle Ticket Befehle")]
     public class Ticket_SL : ApplicationCommandModule
     {
-        [SlashCommand("system", "Erschaffe das Ticket System")]
+        [SlashCommand("system", "Ticket System")]
         public static async Task Ticketsystem(InteractionContext ctx,
                                 [Choice("Valorant", 0)]
                                 [Choice("CS2", 1)]
                                 [Choice("Coaching", 2)]
                                 [Choice("Technik", 3)]
-                                [Option("form", "Welche Ticket Form?")] long systemChoice)
+                                [Option("form", "Wähle eine Ticket Form")] long systemChoice)
         {
             // Pre Execution Checks
             await CmdShortener.CheckIfUserHasCeoRole(ctx);
