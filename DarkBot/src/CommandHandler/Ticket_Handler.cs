@@ -83,14 +83,6 @@ namespace DarkBot.src.CommandHandler
                     break;
 
                 case "modalCoachingForm":
-                    ticketDesc = $"**Aktuelle Elo:** {e.Values["eloTextBox"]}\n" +
-                                 $"**Ich möchte folgendes trainieren:** {e.Values["whatTextBox"]}\n" +
-                                 $"**An diesen Tagen habe ich Zeit:** {e.Values["dayTextBox"]}\n\n" +
-                                 "Ein __Coach__ wird sich sobald wie möglich bei dir melden!";
-                    ticketTitle = "Valorant Coaching";
-
-                    roleId = 1207357073025794079;
-
                     overwrites =
                     [
                         new DiscordOverwriteBuilder(guild.EveryoneRole).Deny(Permissions.AccessChannels),
@@ -98,6 +90,29 @@ namespace DarkBot.src.CommandHandler
                         new DiscordOverwriteBuilder(guild.GetRole(1209284430229803008)).Allow(Permissions.AccessChannels), // Techniker Rolle
                         new DiscordOverwriteBuilder(user).Allow(Permissions.AccessChannels).Deny(Permissions.None),
                     ];
+
+                    // Die ID der Kategorie, in der der Sprachkanal erstellt werden soll
+                    ulong categoryId = 1245048697822249090;
+
+                    // Holen Sie sich die Kategorie anhand der ID
+                    DiscordChannel voiceCategory = guild.GetChannel(categoryId);
+
+                    // Erstellen Sie den Sprachkanal innerhalb der angegebenen Kategorie
+                    DiscordChannel coachingVoice = await guild.CreateVoiceChannelAsync(
+                        $"Coaching-{e.Interaction.User.Username}",
+                        voiceCategory,
+                        overwrites: overwrites,
+                        position: 0
+                    );
+
+                    ticketDesc = $"**Aktuelle Elo:** {e.Values["eloTextBox"]}\n" +
+                                                     $"**Ich möchte folgendes trainieren:** {e.Values["whatTextBox"]}\n" +
+                                                     $"**An diesen Tagen habe ich Zeit:** {e.Values["dayTextBox"]}\n\n" +
+                                                     "Ein __Coach__ wird sich sobald wie möglich bei dir melden!\n\n" +
+                                                     $"Dein persönlicher Coaching Sprachkanal: <#{coachingVoice.Id}>";
+                    ticketTitle = "Valorant Coaching";
+
+                    roleId = 1207357073025794079;
                     break;
                 case "modalTechnicForm":
                     ticketDesc = $"**Problem:** {e.Values["issueTextBox"]}\n\n" +
