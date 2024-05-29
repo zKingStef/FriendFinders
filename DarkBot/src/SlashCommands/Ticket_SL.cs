@@ -137,10 +137,10 @@ namespace DarkBot.src.SlashCommands
             await ctx.Channel.AddOverwriteAsync((DiscordMember)user, Permissions.None);
         }
 
-        [SlashCommand("rename", "Change the Name of the Ticket")]
+        [SlashCommand("rename", "Ändere den Namen eines Tickets")]
         [RequireRoles(RoleCheckMode.Any, "🧰 CEO")]
         public async Task Rename(InteractionContext ctx,
-                             [Option("Name", "New Name of the Ticket")] string newChannelName)
+                             [Option("Name", "Neuer Ticketname")] string newChannelName)
         {
             // Pre Execution Checks
             await Ticket_Handler.CheckIfUserHasTicketPermissions(ctx);
