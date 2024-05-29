@@ -14,6 +14,8 @@ namespace DarkBot.src.CommandHandler
     {
         private static DiscordMessage ticketMessage;
 
+        private static Dictionary<ulong, ulong> ticketChannelMap = new Dictionary<ulong, ulong>();
+
         public string username { get; set; }
         public string  issue { get; set; }
         public ulong ticketId { get; set; }
@@ -35,6 +37,7 @@ namespace DarkBot.src.CommandHandler
             var closeButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeTicketButton", "🔒 Schließen");
             var closeReasonButton = new DiscordButtonComponent(ButtonStyle.Secondary, "closeReasonTicketButton", "🔒 Schließen mit Begründung");
             var claimButton = new DiscordButtonComponent(ButtonStyle.Primary, "claimTicketButton", "☑️ Beanspruchen");
+            DiscordChannel ticketChannel = e.Interaction.Channel;
 
             var overwrites = new List<DiscordOverwriteBuilder>
             {
@@ -113,6 +116,10 @@ namespace DarkBot.src.CommandHandler
                     ticketTitle = "Valorant Coaching";
 
                     roleId = 1207357073025794079;
+
+                    ticketChannel = await guild.CreateTextChannelAsync($"{e.Interaction.User.Username}-Ticket", category, overwrites: overwrites, position: 0);
+
+                    ticketChannelMap[ticketChannel.Id] = coachingVoice.Id;
                     break;
                 case "modalTechnicForm":
                     ticketDesc = $"**Problem:** {e.Values["issueTextBox"]}\n\n" +
@@ -131,8 +138,11 @@ namespace DarkBot.src.CommandHandler
                     break;
             }
 
-            DiscordChannel ticketChannel = await guild.CreateTextChannelAsync($"{e.Interaction.User.Username}-Ticket", category, overwrites: overwrites, position: 0);
-
+            if (e.Interaction.Data.CustomId != "modalCoachingForm")
+            {
+                ticketChannel = await guild.CreateTextChannelAsync($"{e.Interaction.User.Username}-Ticket", category, overwrites: overwrites, position: 0);
+            }
+         
             //var random = new Random();
             //
             //ulong minValue = 1000000000000000000;
@@ -228,7 +238,31 @@ namespace DarkBot.src.CommandHandler
                     .SendAsync(e.Guild.GetChannel(1209297588915015730));
             }
 
-            await e.Channel.DeleteAsync("Ticket geschlossen");
+
+            var ticketChannelId = e.Channel.Id;
+            if (ticketChannelMap.TryGetValue(ticketChannelId, out var voiceChannelId))
+            {
+                var guild = e.Guild;
+                var ticketChannel = guild.GetChannel(ticketChannelId);
+                var voiceChannel = guild.GetChannel(voiceChannelId);
+
+                // Delete the ticket text channel
+                if (ticketChannel != null)
+                {
+                    await ticketChannel.DeleteAsync("Ticket geschlossen");
+                }
+
+                // Delete the associated voice channel
+                if (voiceChannel != null)
+                {
+                    await voiceChannel.DeleteAsync("Ticket geschlossen");
+                }
+
+                // Remove the entry from the dictionary
+                ticketChannelMap.Remove(ticketChannelId);
+            }
+
+            //await e.Channel.DeleteAsync("Ticket geschlossen");
         }
 
         public static async Task CloseTicket(ModalSubmitEventArgs e)
