@@ -239,14 +239,15 @@ namespace DarkBot.src.CommandHandler
             }
 
 
+
             var ticketChannelId = e.Channel.Id;
+            var guild = e.Guild;
+            var ticketChannel = guild.GetChannel(ticketChannelId);
+            await ticketChannel.DeleteAsync("Ticket geschlossen");
+
             if (ticketChannelMap.TryGetValue(ticketChannelId, out var voiceChannelId))
             {
-                var guild = e.Guild;
-                var ticketChannel = guild.GetChannel(ticketChannelId);
                 var voiceChannel = guild.GetChannel(voiceChannelId);
-
-                await ticketChannel.DeleteAsync("Ticket geschlossen");
                 await voiceChannel.DeleteAsync("Ticket geschlossen");
 
                 // Remove the entry from the dictionary
