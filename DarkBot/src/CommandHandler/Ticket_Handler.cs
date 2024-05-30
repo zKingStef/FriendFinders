@@ -205,7 +205,7 @@ namespace DarkBot.src.CommandHandler
 
         public static async Task CloseTicket(ComponentInteractionCreateEventArgs e)
         {
-            if (!Ticket_Handler.CheckIfUserHasTicketPermissions(e))
+            if (!CheckIfUserHasTicketPermissions(e))
                 return;
 
             var embedMessage = new DiscordEmbedBuilder()
@@ -246,17 +246,8 @@ namespace DarkBot.src.CommandHandler
                 var ticketChannel = guild.GetChannel(ticketChannelId);
                 var voiceChannel = guild.GetChannel(voiceChannelId);
 
-                // Delete the ticket text channel
-                if (ticketChannel != null)
-                {
-                    await ticketChannel.DeleteAsync("Ticket geschlossen");
-                }
-
-                // Delete the associated voice channel
-                if (voiceChannel != null)
-                {
-                    await voiceChannel.DeleteAsync("Ticket geschlossen");
-                }
+                await ticketChannel.DeleteAsync("Ticket geschlossen");
+                await voiceChannel.DeleteAsync("Ticket geschlossen");
 
                 // Remove the entry from the dictionary
                 ticketChannelMap.Remove(ticketChannelId);
